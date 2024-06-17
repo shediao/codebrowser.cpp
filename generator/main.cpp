@@ -322,17 +322,17 @@ static bool proceedCommand(std::vector<std::string> command, llvm::StringRef Dir
     command = clang::tooling::getClangStripOutputAdjuster()(command, file);
 #endif
 
-#if CLANG_VERSION_MAJOR <= 17
+#if CLANG_VERSION_MAJOR < 17
     if (!hasNoStdInc) {
 #ifndef _WIN32
         command.push_back("-isystem");
 #else
         command.push_back("-I");
 #endif
-#endif
 
         command.push_back("/builtins");
     }
+#endif
     command.push_back("-Qunused-arguments");
     command.push_back("-Wno-unknown-warning-option");
     clang::tooling::ToolInvocation Inv(command, maybe_unique(new BrowserAction(WasInDatabase)), FM);
